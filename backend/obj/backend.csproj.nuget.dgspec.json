@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\lean\\Documents\\VSCode Projects\\full-stack-template\\backend\\backend.csproj": {}
+    "C:\\Users\\lean\\Documents\\VSCode Projects\\inventory-system\\backend\\backend.csproj": {}
   },
   "projects": {
-    "C:\\Users\\lean\\Documents\\VSCode Projects\\full-stack-template\\backend\\backend.csproj": {
+    "C:\\Users\\lean\\Documents\\VSCode Projects\\inventory-system\\backend\\backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\lean\\Documents\\VSCode Projects\\full-stack-template\\backend\\backend.csproj",
+        "projectUniqueName": "C:\\Users\\lean\\Documents\\VSCode Projects\\inventory-system\\backend\\backend.csproj",
         "projectName": "backend",
-        "projectPath": "C:\\Users\\lean\\Documents\\VSCode Projects\\full-stack-template\\backend\\backend.csproj",
+        "projectPath": "C:\\Users\\lean\\Documents\\VSCode Projects\\inventory-system\\backend\\backend.csproj",
         "packagesPath": "C:\\Users\\lean\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\lean\\Documents\\VSCode Projects\\full-stack-template\\backend\\obj\\",
+        "outputPath": "C:\\Users\\lean\\Documents\\VSCode Projects\\inventory-system\\backend\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\lean\\AppData\\Roaming\\NuGet\\NuGet.Config"

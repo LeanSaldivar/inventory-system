@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "ffpZGkjaMFE=",
+  "dgSpecHash": "YHnwr57vSqY=",
   "success": true,
-  "projectFilePath": "C:\\Users\\lean\\Documents\\VSCode Projects\\full-stack-template\\backend\\backend.csproj",
+  "projectFilePath": "C:\\Users\\lean\\Documents\\VSCode Projects\\inventory-system\\backend\\backend.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\lean\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\lean\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
@@ -130,9 +130,9 @@
       "code": "NU1903",
       "level": "Warning",
       "message": "Package 'AutoMapper' 12.0.1 has a known high severity vulnerability, https://github.com/advisories/GHSA-rvv3-g6hj-g44x",
-      "projectPath": "C:\\Users\\lean\\Documents\\VSCode Projects\\full-stack-template\\backend\\backend.csproj",
+      "projectPath": "C:\\Users\\lean\\Documents\\VSCode Projects\\inventory-system\\backend\\backend.csproj",
       "warningLevel": 1,
-      "filePath": "C:\\Users\\lean\\Documents\\VSCode Projects\\full-stack-template\\backend\\backend.csproj",
+      "filePath": "C:\\Users\\lean\\Documents\\VSCode Projects\\inventory-system\\backend\\backend.csproj",
       "libraryId": "AutoMapper",
       "targetGraphs": [
         "net10.0"
@@ -142,9 +142,9 @@
       "code": "NU1903",
       "level": "Warning",
       "message": "Package 'Microsoft.Build' 17.10.4 has a known high severity vulnerability, https://github.com/advisories/GHSA-w3q9-fxm7-j8fq",
-      "projectPath": "C:\\Users\\lean\\Documents\\VSCode Projects\\full-stack-template\\backend\\backend.csproj",
+      "projectPath": "C:\\Users\\lean\\Documents\\VSCode Projects\\inventory-system\\backend\\backend.csproj",
       "warningLevel": 1,
-      "filePath": "C:\\Users\\lean\\Documents\\VSCode Projects\\full-stack-template\\backend\\backend.csproj",
+      "filePath": "C:\\Users\\lean\\Documents\\VSCode Projects\\inventory-system\\backend\\backend.csproj",
       "libraryId": "Microsoft.Build",
       "targetGraphs": [
         "net10.0"
@@ -154,9 +154,9 @@
       "code": "NU1901",
       "level": "Warning",
       "message": "Package 'NuGet.Packaging' 6.11.0 has a known low severity vulnerability, https://github.com/advisories/GHSA-g4vj-cjjj-v7hg",
-      "projectPath": "C:\\Users\\lean\\Documents\\VSCode Projects\\full-stack-template\\backend\\backend.csproj",
+      "projectPath": "C:\\Users\\lean\\Documents\\VSCode Projects\\inventory-system\\backend\\backend.csproj",
       "warningLevel": 1,
-      "filePath": "C:\\Users\\lean\\Documents\\VSCode Projects\\full-stack-template\\backend\\backend.csproj",
+      "filePath": "C:\\Users\\lean\\Documents\\VSCode Projects\\inventory-system\\backend\\backend.csproj",
       "libraryId": "NuGet.Packaging",
       "targetGraphs": [
         "net10.0"
@@ -166,9 +166,9 @@
       "code": "NU1901",
       "level": "Warning",
       "message": "Package 'NuGet.Protocol' 6.11.0 has a known low severity vulnerability, https://github.com/advisories/GHSA-g4vj-cjjj-v7hg",
-      "projectPath": "C:\\Users\\lean\\Documents\\VSCode Projects\\full-stack-template\\backend\\backend.csproj",
+      "projectPath": "C:\\Users\\lean\\Documents\\VSCode Projects\\inventory-system\\backend\\backend.csproj",
       "warningLevel": 1,
-      "filePath": "C:\\Users\\lean\\Documents\\VSCode Projects\\full-stack-template\\backend\\backend.csproj",
+      "filePath": "C:\\Users\\lean\\Documents\\VSCode Projects\\inventory-system\\backend\\backend.csproj",
       "libraryId": "NuGet.Protocol",
       "targetGraphs": [
         "net10.0"

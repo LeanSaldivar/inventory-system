@@ -200,6 +200,7 @@ public class AuthControllerController : ControllerBase
     /// <summary>
     /// Get all users (Admin only)
     /// </summary>
+    [Authorize]
     [HttpGet("admin/users")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -223,7 +224,7 @@ public class AuthControllerController : ControllerBase
     /// Delete user (Admin only)
     /// </summary>
     [Authorize]
-    [HttpDelete("/del/{id}")]
+    [HttpDelete("del/{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
