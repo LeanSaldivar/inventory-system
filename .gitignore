@@ -1,0 +1,6 @@
+.vscode/
+backend/.env
+backend/appsettings.json
+docker-compose.yml
+backend/cert/ca.pem
+backend/bin

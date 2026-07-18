@@ -1,0 +1,27 @@
+@use "base/index" as *;
+
+:root {
+  color: $dark;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: $font-family;
+  line-height: 1.5;
+  font-weight: 400;
+  background-color: #eff9ff;
+}
