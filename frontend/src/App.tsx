@@ -9,23 +9,22 @@ import { Reports } from './pages/reports';
 import { Sales } from './pages/sales';
 import { Settings } from './pages/settings';
 import { Suppliers } from './pages/suppliers';
+import { Login } from './pages/login';
 
 export const App = () => {
   return (
-    <div>
       <Routes>
-      <Route path="/" element={<InventoryLayout />}>
-        <Route index element={<Dashboard />} />
-        <Route path="dashboard" element={<Dashboard />} />
-        <Route path="inventory" element={<Inventory />} />
-        <Route path="products" element={<Products />} />
-        <Route path="recieve" element={<Recieve />} />
-        <Route path="contact" element={<Reports />} />
-        <Route path="contact" element={<Sales />} />
-        <Route path="contact" element={<Settings />} />
-        <Route path="contact" element={<Suppliers />} />
-      </Route>
-    </Routes>
-    </div >
+        <Route path="/reisa/login" index element={<Login />} />
+        <Route path="/" element={<InventoryLayout />}>
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="inventory" element={<Inventory />} />
+          <Route path="products" element={<Products />} />
+          <Route path="recieve" element={<Recieve />} />
+          <Route path="contact" element={<Reports />} />
+          <Route path="contact" element={<Sales />} />
+          <Route path="contact" element={<Settings />} />
+          <Route path="contact" element={<Suppliers />} />
+        </Route>
+      </Routes>
   )
 };
