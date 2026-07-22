@@ -1,16 +1,16 @@
 import { Routes, Route } from 'react-router-dom'; // 1. Import Routes and Route
 import './styles/global.scss'
 import { InventoryLayout } from './layout/inventory/inventoryLayout';
-import { Dashboard } from './pages/dashboard';
-import { Inventory } from './pages/inventory';
-import { Products } from './pages/products';
-import { Recieve } from './pages/recieve';
-import { Reports } from './pages/reports';
-import { Sales } from './pages/sales';
-import { Settings } from './pages/settings';
-import { Suppliers } from './pages/suppliers';
-import { Login } from './pages/inventory/login';
-import { Register } from './pages/inventory/register';
+import { Dashboard } from './pages/inventory/dashboard';
+import { Inventory } from './pages/inventory/inventory';
+import { Products } from './pages/inventory/products';
+import { Recieve } from './pages/inventory/recieve';
+import { Reports } from './pages/inventory/reports';
+import { Sales } from './pages/inventory/sales';
+import { Settings } from './pages/inventory/settings';
+import { Suppliers } from './pages/inventory/suppliers';
+import { Login } from './pages/auth/login';
+import { Register } from './pages/auth/register';
 import { AuthLayout } from './layout/auth/authLayout';
 
 export const App = () => {
@@ -22,7 +22,7 @@ export const App = () => {
         <Route path="login" element={<Login />} />
       </Route>
 
-      
+
       <Route path="/reisa" element={<InventoryLayout />}>
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="inventory" element={<Inventory />} />
