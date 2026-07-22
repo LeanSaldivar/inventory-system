@@ -1,4 +1,5 @@
 import { PillIcon } from "../assets/svg/pillIcon";
+import AuthBtn from "../components/button/btn";
 import "./login.scss"
 
 export const Login = () => {
@@ -52,10 +53,7 @@ export const Login = () => {
                     required
                 />
 
-             
-                <button className="sign-in">
-                    Sign In
-                </button>
+                <AuthBtn text="Sign-in"/>
             </form>
         </div>
     )
