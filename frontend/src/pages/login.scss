@@ -79,24 +79,5 @@
                 color: $span-color-2;
             }
         }
-
-        .button-wrapper {
-            .remember-wrapper {
-                display: flex;
-                align-items: center;
-
-                gap: 0.25rem;
-            }
-
-            @include flex();
-            justify-content: space-between;
-            flex-wrap: wrap;
-            margin: 1rem 0;
-        }
-
-
     }
-
-
-
 }

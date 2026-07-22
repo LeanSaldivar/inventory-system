@@ -52,15 +52,7 @@ export const Login = () => {
                     required
                 />
 
-                <div className="button-wrapper">
-                    <div className="remember-wrapper">
-                        <input type="checkbox" />
-                        <label htmlFor="">Remember Me?</label>
-
-                    </div>
-                    <a href="#" className="remember">Forgot Password?</a>
-                </div>
-
+             
                 <button className="sign-in">
                     Sign In
                 </button>
