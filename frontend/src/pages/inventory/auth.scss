@@ -1,0 +1,46 @@
+@use "../../styles/base/variables" as *;
+@use "../../styles/base/mixins" as *;
+
+.login-form {
+    @include flex(column, 0.5rem);
+
+    background-color: $light;
+    border-radius: 20px;
+
+    width: clamp(300px, 30vw, 900px);
+    padding: 2rem;
+
+
+
+    input {
+        background-color: $input-color;
+        padding: 1rem;
+        border-radius: 20px;
+        border: none;
+    }
+
+    label {
+        font-size: 1rem;
+        color: $darker-blue;
+    }
+
+    .form-header {
+        @include flex(column, 0.5rem);
+
+        margin-bottom: 1rem;
+
+        h2 {
+            color: $darker-blue;
+        }
+
+        span {
+            color: $span-color-2;
+        }
+    }
+
+    .register-link {
+        @include flex($gap: 0.5rem);
+        margin-top: 1rem;
+        justify-content: flex-end;
+    }
+}   
