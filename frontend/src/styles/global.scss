@@ -71,6 +71,13 @@ a {
   list-style: none;
 }
 
+a {
+  color: $span-color-2;
+  &:hover {
+    color: $light-blue;
+  }
+}
+
 button {
   border-radius: 20px;
   border:none;
