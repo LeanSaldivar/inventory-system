@@ -1,24 +1,10 @@
-import { PillIcon } from "../assets/svg/pillIcon";
-import AuthBtn from "../components/button/btn";
-import "./login.scss"
+import { Link } from "react-router-dom";
+import AuthBtn from "../../components/button/btn";
+import "./auth.scss"
 
-export const Login = () => {
+export const Register = () => {
     return (
-        <div className="login-container">
-            <header className="login-header">
-
-                <div className="iconLogo">
-                    <PillIcon className="pillIconLogo" />
-                </div>
-
-                <h1>
-                    Reisa DrugStore & General Merchandise
-                </h1>
-
-                <span>
-                    Inventory Management System
-                </span>
-            </header>
+        <>
             <form action="" className="login-form">
                 <header className="form-header">
                     <h2>
@@ -26,7 +12,7 @@ export const Login = () => {
                     </h2>
 
                     <span>
-                        Sign in to your account to continue
+                        Create an account to continue
                     </span>
                 </header>
 
@@ -49,12 +35,27 @@ export const Login = () => {
                     type="password"
                     name="password"
                     id="password"
-                    placeholder="password"
                     required
                 />
 
-                <AuthBtn text="Sign-in"/>
+                <label htmlFor="password">
+                    CONFIRM PASSWORD
+                </label>
+                <input
+                    type="password"
+                    name="password"
+                    id="password"
+                    required
+                />
+
+                <AuthBtn text="Create Account!" />
+
+                <div className="register-link">
+                    <Link to="/reisa/login" className="register">
+                        Sign-in
+                    </Link>
+                </div>
             </form>
-        </div>
+        </>
     )
 }
