@@ -8,7 +8,7 @@ export const AuthLayout = () => {
             <header className="auth-header">
 
                 <div className="iconLogo">
-                    <PillIcon className="pillIconLogo" />
+                    <PillIcon  className="pillIconLogo" />
                 </div>
 
                 <h1>
