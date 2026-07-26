@@ -7,7 +7,6 @@ using DotNetEnv;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Npgsql;
 
 Env.Load();
 
@@ -15,95 +14,12 @@ Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
 
-string ResolveConnectionString(string connectionName, string envPrefix = "")
-{
-    var connectionString = builder.Configuration.GetConnectionString(connectionName);
+var sqliteConnection = builder.Configuration.GetConnectionString("SqliteConnection") ?? "Data Source=inventory.db";
 
-    if (!string.IsNullOrWhiteSpace(connectionString))
-    {
-        return connectionString;
-    }
-
-    var prefix = string.IsNullOrEmpty(envPrefix) ? "" : $"{envPrefix}_";
-
-    var host = builder.Configuration[$"{prefix}HOST"] ?? Environment.GetEnvironmentVariable($"{prefix}HOST") ?? "localhost";
-    var port = builder.Configuration[$"{prefix}PORT"] ?? Environment.GetEnvironmentVariable($"{prefix}PORT") ?? "5432";
-    var database = builder.Configuration[$"{prefix}DATABASE"] ?? Environment.GetEnvironmentVariable($"{prefix}DATABASE") ?? "appdb";
-    var username = builder.Configuration[$"{prefix}USERNAME"]
-        ?? builder.Configuration[$"{prefix}USER"]
-        ?? Environment.GetEnvironmentVariable($"{prefix}USERNAME")
-        ?? Environment.GetEnvironmentVariable($"{prefix}USER")
-        ?? "postgres";
-    var password = builder.Configuration[$"{prefix}PASSWORD"]
-        ?? Environment.GetEnvironmentVariable($"{prefix}PASSWORD")
-        ?? "password";
-
-    var sslMode = builder.Configuration[$"{prefix}SSL_MODE"] ?? Environment.GetEnvironmentVariable($"{prefix}SSL_MODE");
-    if (string.IsNullOrWhiteSpace(sslMode) && !string.IsNullOrEmpty(envPrefix))
-    {
-        sslMode = "Require";
-    }
-
-    var connBuilder = $"Host={host};Port={port};Database={database};Username={username};Password={password};";
-
-    if (!string.IsNullOrWhiteSpace(sslMode))
-    {
-        connBuilder += $"SslMode={sslMode};";
-
-        if (sslMode.Equals("Require", StringComparison.OrdinalIgnoreCase) ||
-            sslMode.Equals("Prefer", StringComparison.OrdinalIgnoreCase))
-        {
-            connBuilder += "Trust Server Certificate=true;";
-        }
-    }
-
-    return connBuilder;
-}
-
-async Task<string> ResolvePreferredConnectionStringAsync(string primaryConnectionString, string? secondaryConnectionString)
-{
-    var candidates = new List<string>();
-
-    if (!string.IsNullOrWhiteSpace(primaryConnectionString))
-    {
-        candidates.Add(primaryConnectionString);
-    }
-
-    if (!string.IsNullOrWhiteSpace(secondaryConnectionString) &&
-        !string.Equals(primaryConnectionString, secondaryConnectionString, StringComparison.OrdinalIgnoreCase))
-    {
-        candidates.Add(secondaryConnectionString);
-    }
-
-    foreach (var candidate in candidates)
-    {
-        try
-        {
-            await using var connection = new NpgsqlConnection(candidate);
-            await connection.OpenAsync();
-            Console.WriteLine("Connected successfully using the configured database connection.");
-            return candidate;
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Connection attempt failed: {ex.Message}");
-        }
-    }
-
-    return primaryConnectionString;
-}
-
-var dockerConnection = ResolveConnectionString("DefaultConnection");
-var aivenConnection = ResolveConnectionString("BackupConnection", "AIVEN");
-var selectedConnection = await ResolvePreferredConnectionStringAsync(dockerConnection, aivenConnection);
-var selectedConnectionSource = string.Equals(selectedConnection, aivenConnection, StringComparison.OrdinalIgnoreCase)
-    ? "Aiven"
-    : "Docker";
-
-Console.WriteLine($"Using database connection from {selectedConnectionSource}.");
+Console.WriteLine("Using SQLite database connection for offline access.");
 
 builder.Services.AddDbContext<AppDataContext>(options =>
-    options.UseNpgsql(selectedConnection));
+    options.UseSqlite(sqliteConnection));
 
 // Identity config
 builder.Services.AddIdentity<User, IdentityRole<int>>(options =>
@@ -162,7 +78,7 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-//Apply migrations for postgreSQL
+// Apply migrations for the configured database
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -171,20 +87,6 @@ using (var scope = app.Services.CreateScope())
     {
         Console.WriteLine("Applying Migrations...");
         await dbContext.Database.MigrateAsync();
-
-        // PostgreSQL fix: Table names are usually lowercase/case-sensitive in raw SQL
-        // Also, PostgreSQL uses 'RESTART IDENTITY' not 'AUTO_INCREMENT'
-        var usersWithZeroId = await dbContext.Users.Where(u => u.Id == 0).ToListAsync();
-        if (usersWithZeroId.Any())
-        {
-            dbContext.Users.RemoveRange(usersWithZeroId);
-            await dbContext.SaveChangesAsync();
-
-            // Correct PostgreSQL syntax to reset the Identity sequence
-            // Note: We use "Users" because that is what you named the table in AppDataContext
-            await dbContext.Database.ExecuteSqlRawAsync("ALTER TABLE \"Users\" ALTER COLUMN \"UserId\" RESTART WITH 1;");
-            Console.WriteLine("Cleaned up ID 0 and reset sequence.");
-        }
     }
     catch (Exception ex)
     {
