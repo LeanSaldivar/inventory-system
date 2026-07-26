@@ -1,0 +1,18 @@
+@use "../../styles/base/variables" as *;
+@use "../../styles/base/mixins" as *;
+
+.main-container {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 0.1fr 1fr;
+
+
+    
+
+    .asd {
+        p {
+            font-size: 10rem;
+        }
+    }
+
+}
