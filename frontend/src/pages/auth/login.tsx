@@ -42,7 +42,7 @@ export const Login = () => {
                 <AuthBtn text="Sign-in" />
 
                 <div className="register-link">
-                    <Link to="/reisa/register" className="register">
+                    <Link to="/auth/register" className="register">
                         Create Account
                     </Link>
                 </div>
