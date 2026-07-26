@@ -18,3 +18,16 @@ export default function AuthBtn({
     </button>
   );
 }
+
+export const LogoutBtn = ({
+  text,
+  icon,
+  onClick,
+}: LoginButtonProps) => {
+  return (
+    <button onClick={onClick} className="logoutbtn">
+      {icon}
+      <span>{text}</span>
+    </button>
+  );
+};
