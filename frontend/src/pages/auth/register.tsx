@@ -1,8 +1,8 @@
+import { Link } from "react-router-dom";
 import AuthBtn from "../../components/button/btn";
 import "./auth.scss"
-import { Link } from 'react-router-dom';
 
-export const Login = () => {
+export const Register = () => {
     return (
         <>
             <form action="" className="login-form">
@@ -12,7 +12,7 @@ export const Login = () => {
                     </h2>
 
                     <span>
-                        Sign in to your account to continue
+                        Create an account to continue
                     </span>
                 </header>
 
@@ -35,15 +35,24 @@ export const Login = () => {
                     type="password"
                     name="password"
                     id="password"
-                    placeholder="password"
                     required
                 />
 
-                <AuthBtn text="Sign-in" />
+                <label htmlFor="password">
+                    CONFIRM PASSWORD
+                </label>
+                <input
+                    type="password"
+                    name="password"
+                    id="password"
+                    required
+                />
+
+                <AuthBtn text="Create Account!" />
 
                 <div className="register-link">
-                    <Link to="/reisa/register" className="register">
-                        Create Account
+                    <Link to="/auth/login" className="register">
+                        Sign-in
                     </Link>
                 </div>
             </form>

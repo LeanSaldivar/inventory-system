@@ -15,3 +15,25 @@
 
     box-shadow: 0 3px 12px $dark-blue;
 }
+
+.logoutbtn {
+    @include flex(row, 1rem);
+    align-items: center;
+    background-color: inherit;
+    color: $menu-color;
+    width: 100%;
+    padding: 1rem;
+
+    transition:
+        background-color $transition-normal,
+        color $transition-normal;
+
+    &:hover {
+        background-color: $red-hover;
+        color: $red-clr;
+    }
+
+    span {
+         transition: opacity .2s ease;
+    }
+}

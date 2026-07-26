@@ -1,6 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
 
-$font-family: 'Outfit', sans-serif;
+$font-family: "Manrope", sans-serif;
 
 //Fonts go here
 
@@ -9,12 +9,22 @@ $dark: #0A0A0A;
 $light-blue: #2B7FFF;
 $dark-blue: #155DFC;
 $darker-blue: #1D293D;
+$darker-blue-2: #1A2B45;
 
 $span-color1: #8EC5FF;
 $span-color-2: #62748E;
 
+$hover-color: #1C3862;
+$menu-color: #90A1B9;
+
+$red-hover: #302B43;
+$red-clr: #99606F;
 
 $input-color: #F8FAFC;
 
 $gradient-backup: #0F182D;
-$gradient: linear-gradient(130deg,rgba(15, 24, 45, 1) 0%, rgba(22, 36, 85, 1) 50%, rgba(15, 24, 45, 1) 100%)
+$gradient: linear-gradient(130deg,rgba(15, 24, 45, 1) 0%, rgba(22, 36, 85, 1) 50%, rgba(15, 24, 45, 1) 100%);
+
+$transition-fast: 0.2s ease;
+$transition-normal: 0.25s ease;
+$transition-slow: 0.35s ease;

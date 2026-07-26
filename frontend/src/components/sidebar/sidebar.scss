@@ -1,0 +1,226 @@
+@use '../../styles/base/mixins' as *;
+@use '../../styles/base/variables' as *;
+
+
+.sticky-sidebar.collapsed {
+    width: 78px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, .05);
+
+    .text-wrapper {
+        opacity: 0;
+        transform: translateX(-12px);
+        pointer-events: none;
+    }
+
+    .pages-item {
+        justify-content: center;
+    }
+
+    .pages-url {
+        display: none;
+    }
+
+    .menu-icon {
+        transform: rotate(180deg);
+    }
+
+    .pages-url {
+        opacity: 0;
+        width: 0;
+        overflow: hidden;
+    }
+
+    .profile .text {
+        opacity: 0;
+        width: 0;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    .logout-btn span {
+        opacity: 0;
+        width: 0;
+        overflow: hidden;
+    }
+
+    .logout-btn button {
+        justify-content: center;
+    }
+
+
+
+}
+
+.sticky-sidebar {
+    @include flex(column);
+    background-color: $darker-blue-2;
+
+    width: 13vw;
+    max-height: 100vh;
+    padding-top: 1rem;
+
+    position: sticky;
+    top: 0px;
+    right: 0px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, .08);
+
+    transition:
+        width 250ms ease,
+        box-shadow 250ms ease;
+
+
+    .sidebar-header {
+        @include flex-center(row, $wrap: "no-wrap");
+        padding: 0 0.5rem;
+
+        .logo-icon {
+            display: inline-flex;
+            align-items: center;
+            border-radius: 15px;
+            background-color: $light-blue;
+            padding: 0.50rem;
+
+
+            .mini-logo {
+                color: $light;
+            }
+        }
+
+        .text-wrapper {
+            @include flex();
+            flex: 1;
+            justify-content: space-around;
+
+            transition:
+                opacity 200ms ease,
+                transform 200ms ease;
+
+            transform: translateX(0);
+            opacity: 1;
+
+            .text {
+                @include flex(column, 0);
+
+                p {
+                    color: $light;
+                    font-size: 0.813rem;
+                }
+
+                span {
+                    color: $light-blue;
+                    font-size: 0.625rem;
+                }
+
+            }
+        }
+
+        .menu {
+            display: flex;
+            align-items: center;
+
+
+            .menu-icon {
+                color: $menu-color;
+                transition: transform 250ms ease;
+
+
+                &:hover {
+                    cursor: pointer;
+                    opacity: 0.5;
+                }
+            }
+        }
+    }
+
+    hr {
+        border: none;
+        height: 0.5px;
+        background-color: $menu-color;
+    }
+
+    .header-pages {
+        @include flex(column, 1rem);
+
+        .pages-item {
+            @include flex(row, 1rem);
+            align-items: center;
+
+            width: 100%;
+            padding: 1rem;
+
+            border-radius: 20px;
+
+            transition:
+                background-color $transition-normal,
+                color $transition-normal;
+
+
+            .pages-url {
+                color: $menu-color;
+                font-size: 0.9rem;
+                font-weight: 550;
+                transition: color $transition-normal;
+                white-space: nowrap;
+            }
+
+            .pages-logo {
+                color: $menu-color;
+                transition: color $transition-normal;
+            }
+
+            &:hover,
+            &:active {
+                background-color: $hover-color;
+                color: $span-color1;
+                cursor: pointer;
+
+                .pages-url,
+                .pages-logo {
+                    color: $span-color1;
+
+                }
+            }
+
+        }
+    }
+
+    .logout {
+        @include flex(column, 1rem);
+        margin-top: auto;
+
+        transition: all .25s ease;
+
+        .profile {
+            @include flex();
+            align-items: center;
+            margin-left: 0.5rem;
+
+            .initials {
+                background-color: $light-blue;
+                color: $light;
+                padding: 0.5rem;
+                border-radius: 50%;
+            }
+
+            .text {
+                @include flex(column, 0.1rem);
+                transition:
+                    opacity .2s ease,
+                    width .2s ease;
+
+                p {
+                    font-size: 0.813rem;
+                    color: $light;
+                }
+
+                span {
+                    font-size: 0.625rem;
+                    color: $span-color-2;
+                }
+            }
+        }
+
+
+
+    }
+}
