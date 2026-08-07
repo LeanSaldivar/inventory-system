@@ -59,6 +59,14 @@ builder.Services.ConfigureApplicationCookie(options =>
         : CookieSecurePolicy.Always;
 });
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", policy => policy.RequireRole(nameof(UserRole.Owner)));
+    options.AddPolicy("CashierOnly", policy => policy.RequireRole(nameof(UserRole.Cashier)));
+    options.AddPolicy("PharmacistOnly", policy => policy.RequireRole(nameof(UserRole.Pharmacist)));
+    options.AddPolicy("ViewerOnly", policy => policy.RequireRole(nameof(UserRole.Viewer)));
+});
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApi();
 
@@ -72,6 +80,17 @@ builder.Services.AddCors(options =>
               .AllowCredentials();
     });
 });
+
+builder.Services
+    .AddAuthentication()
+    .AddGoogle(options =>
+    {
+        options.ClientId = Environment.GetEnvironmentVariable("GOOGLE_CLIENT_ID") ?? throw new InvalidOperationException("GOOGLE_CLIENT_ID is not set.");
+        options.ClientSecret = Environment.GetEnvironmentVariable("GOOGLE_CLIENT_SECRET") ?? throw new InvalidOperationException("GOOGLE_CLIENT_SECRET is not set.");
+        options.CallbackPath = "/api/oauth2/auth/google/callback";
+        options.Scope.Add("profile");
+        options.Scope.Add("email");
+    });
 
 
 
@@ -117,6 +136,9 @@ app.UseExceptionHandler(errorApp =>
         await context.Response.WriteAsJsonAsync(new { message = "An error occurred", error = exception?.Message });
     });
 });
+
+
+
 
 if (app.Environment.IsDevelopment())
 {
