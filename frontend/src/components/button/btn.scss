@@ -34,6 +34,59 @@
     }
 
     span {
-         transition: opacity .2s ease;
+        transition: opacity .2s ease;
     }
+}
+
+.filter {
+    padding: 0.5rem 1rem;
+    background-color: $light;
+    border-radius: 20px;
+
+    p {
+        font-weight: bold;
+        font-size: 0.813rem;
+        color: $darker-blue;
+    }
+}
+
+.aiBtn {
+    display: flex;
+    flex: 1;
+
+    justify-content: center;
+    color: $span-color-2;
+    background-color: $light;
+    padding: 1rem;
+    font-weight: 600;
+
+    transition: $transition-normal;
+    padding: 1rem;
+
+    border-radius: 0;
+
+    &:active {
+        color: $blue;
+        border-bottom: solid $blue 5px;
+
+        transition: $transition-normal;
+    }
+
+    &:hover {
+        color: $dark;
+        border-bottom: solid $blue 5px;
+
+
+        cursor: pointer;
+        transition: $transition-fast;
+    }
+
+
+
+}
+
+.promptBtn {
+    border-radius: 25px;
+    background-color: $blue;
+    padding: 1rem;
 }

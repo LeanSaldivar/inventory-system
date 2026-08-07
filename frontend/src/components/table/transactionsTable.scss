@@ -1,0 +1,56 @@
+@use '../../styles/base/variables' as *;
+@use '../../styles/base/mixins' as *;
+
+.transaction {
+    @include flex();
+    width: 100%;
+    align-items: center;
+    padding: 0.5rem;
+
+
+    &:hover {
+        border-radius: 20px;
+        background-color: $gray-bg;
+    }
+
+
+    .transaction-profile {
+        @include flex();
+        align-items: center;
+
+        width: 100%;
+
+
+        .transaction-icon {
+            display: inline-flex;
+            align-items: center;
+
+            border-radius: 20px;
+            padding: 0.5rem;
+            max-height: fit-content;
+
+            background-color: $initials-color2;
+        }
+
+        .transaction-text {
+            @include flex(column, 0.1rem);
+
+            p {
+                font-size: 0.813rem;
+                font-weight: 600;
+            }
+
+            span {
+                color: $span-color-2;
+                font-size: 0.688rem;
+                font-weight: 500;
+            }
+        }
+    }
+
+    .price {
+        font-weight: 600;
+        font-size: 1rem;
+    }
+
+}

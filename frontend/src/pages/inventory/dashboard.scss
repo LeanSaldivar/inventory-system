@@ -1,0 +1,138 @@
+@use '../../styles/base/mixins' as *;
+@use '../../styles/base/variables' as *;
+
+
+.ai.dashboard-container {
+    padding: 0;
+}
+
+.dashboard-container {
+    @include flex(column);
+    padding: 1rem;
+    margin: 1rem;
+
+    border-radius: 20px;
+    
+    background-color: $light;
+
+    .dashboard-subheader {
+        @include flex();
+        justify-content: space-between;
+        align-items: center;
+
+
+        .subheader-text {
+            @include flex(column, 0.5rem);
+
+            h2 {
+                font-size: 1.063rem;
+                font-weight: 600;
+            }
+
+            p {
+                font-size: 0.813rem;
+
+                color: $menu-color;
+            }
+        }
+
+        .filter-wrapper {
+            @include flex();
+            align-items: center;
+
+            background-color: $gray-bg;
+            padding: 1.5rem;
+            border-radius: 20px;
+
+            height: 50px;
+        }
+    }
+
+    .sales-card {
+        @include flex-center();
+
+        .total-sales,
+        .transactions,
+        .average {
+            background-color: $input-color;
+            @include flex(column, 0.5rem);
+            align-items: center;
+            width: 24rem;
+            padding: 1rem;
+            border-radius: 20px;
+
+            p {
+                font-weight: 600;
+                font-size: 1.438rem;
+            }
+
+            span {
+                font-weight: 500;
+                color: $span-color-2;
+            }
+        }
+
+        .total-sales {
+            p {
+                color: $sales;
+            }
+        }
+
+        .average {
+            color: $ave;
+        }
+    }
+
+    .transaction-container {
+        @include flex(column);
+
+        p {
+            color: $darker-blue-3;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .shopping-icon {
+            color: $light-blue;
+        }
+
+    }
+
+    .top-products-container {
+        @include flex(row);
+        align-items: center;
+        justify-content: space-between;
+
+        .products-text {
+            @include flex(column, 0.5rem);
+
+            p {
+                font-size: 1.063rem;
+                font-weight: 600;
+            }
+
+            span {
+                color: $menu-color;
+                font-weight: 500;
+                font-size: 0.813rem;
+            }
+        }
+
+        .filter-wrapper {
+            @include flex();
+            align-items: center;
+
+            background-color: $gray-bg;
+            padding: 1.5rem;
+            border-radius: 20px;
+
+            height: 50px;
+        }
+
+    }
+
+    
+        .product-table {
+            @include flex(column, 2rem);
+        }
+}
