@@ -207,6 +207,11 @@ namespace backend.Data.migrations
                         .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("UserRole")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
@@ -270,6 +275,40 @@ namespace backend.Data.migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("backend.model.User", b =>
+                {
+                    b.OwnsOne("backend.model.AvatarInfo", "AvatarUri", b1 =>
+                        {
+                            b1.Property<int>("UserId")
+                                .HasColumnType("INTEGER");
+
+                            b1.Property<string>("Large")
+                                .HasMaxLength(200)
+                                .HasColumnType("TEXT")
+                                .HasColumnName("AvatarLarge");
+
+                            b1.Property<string>("Normal")
+                                .HasMaxLength(200)
+                                .HasColumnType("TEXT")
+                                .HasColumnName("AvatarNormal");
+
+                            b1.Property<string>("Small")
+                                .HasMaxLength(200)
+                                .HasColumnType("TEXT")
+                                .HasColumnName("AvatarSmall");
+
+                            b1.HasKey("UserId");
+
+                            b1.ToTable("Users");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserId");
+                        });
+
+                    b.Navigation("AvatarUri")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618
