@@ -791,3 +791,4 @@ C:\Users\lean\Documents\VSCode Projects\inventory-system (Saas)\backend\obj\Debu
 C:\Users\lean\Documents\VSCode Projects\inventory-system (Saas)\backend\obj\Debug\net10.0\backend.pdb
 C:\Users\lean\Documents\VSCode Projects\inventory-system (Saas)\backend\obj\Debug\net10.0\backend.genruntimeconfig.cache
 C:\Users\lean\Documents\VSCode Projects\inventory-system (Saas)\backend\obj\Debug\net10.0\ref\backend.dll
+C:\Users\lean\Documents\VSCode Projects\inventory-system (Saas)\backend\bin\Debug\net10.0\Microsoft.AspNetCore.Authentication.Google.dll
