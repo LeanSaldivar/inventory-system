@@ -1,0 +1,39 @@
+@use '../../styles/base/mixins' as *;
+@use '../../styles/base/variables' as *;
+
+.header-container {
+    @include flex();
+    padding: 1rem;
+
+    background-color: $light;
+
+    .title {}
+
+    .profile-wrapper {
+        @include flex();
+
+        align-items: center;
+        margin-left: auto;
+
+        .notif-icon {
+            display: inline-flex;
+            align-items: center;
+            .notif {
+                
+                color: $menu-color;
+            }
+        }
+    }
+
+    .profile-wrapper p {
+        color: $dark;
+        font-size: 0.813rem;
+    }
+
+    .profile-wrapper span {
+        color: $menu-color;
+        font-size: 0.688rem;
+    }
+
+
+}

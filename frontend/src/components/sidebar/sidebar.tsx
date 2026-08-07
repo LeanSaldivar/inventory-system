@@ -8,6 +8,7 @@ import "./sidebar.scss"
 import { LogoutBtn } from '../button/btn';
 import { LogoutIcon } from '../../assets/svg/logoutIcon';
 import { useState } from "react";
+import { Initials } from '../card/initials';
 
 export const Sidebar = () => {
     const [collapsed, setCollapsed] = useState(false);
@@ -40,15 +41,15 @@ export const Sidebar = () => {
 
             <div className="header-pages">
                 <ul className="pages-container">
-                    <Link to="#" className="pages-item">
+                    <Link to="/reisa/dashboard" className="pages-item">
                         <DashboardIcon width={30} height={30} className="pages-logo" />
                         <span className="pages-url">Dashboard</span>
                     </Link>
-                    <Link to="#" className="pages-item">
+                    <Link to="/reisa/products" className="pages-item">
                         <ProductIcon width={25} height={25} className="pages-logo" />
                         <span className="pages-url">Products</span>
                     </Link>
-                    <Link to="#" className="pages-item">
+                    <Link to="/reisa/sales" className="pages-item">
                         <ShoppingCartIcon width={25} height={25} className="pages-logo" />
                         <span className="pages-url">Sales/POS</span>
                     </Link>
@@ -60,21 +61,7 @@ export const Sidebar = () => {
             <div className="logout">
                 <hr />
 
-                <div className="profile">
-                    <div className="initials">
-                        MS
-                    </div>
-
-                    <div className="text">
-                        <p>
-                            Maria Santos
-                        </p>
-
-                        <span>
-                            Pharmacist
-                        </span>
-                    </div>
-                </div>
+                <Initials />
 
                 <div className="logout-btn">
                     <LogoutBtn icon={<LogoutIcon width={20} height={20} />} text={"Logout"} />

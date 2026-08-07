@@ -1,6 +1,6 @@
 import "./btn.scss"
 
-type LoginButtonProps = {
+type ButtonProps = {
   text: string;
   icon?: React.ReactNode;
   onClick?: () => void;
@@ -9,7 +9,7 @@ type LoginButtonProps = {
 export default function AuthBtn({
   text,
   onClick,
-}: LoginButtonProps) {
+}: ButtonProps) {
   return (
     <button onClick={onClick} className="btn auth">
       <p>
@@ -23,7 +23,7 @@ export const LogoutBtn = ({
   text,
   icon,
   onClick,
-}: LoginButtonProps) => {
+}: ButtonProps) => {
   return (
     <button onClick={onClick} className="logoutbtn">
       {icon}
@@ -31,3 +31,53 @@ export const LogoutBtn = ({
     </button>
   );
 };
+
+export const FilterBtn = ({
+  text,
+  onClick,
+}: ButtonProps) => {
+  return (
+    <button onClick={onClick} className="filter">
+      <p>
+        {text}
+      </p>
+    </button>
+  )
+}
+
+export const AiBtn = ({
+  text,
+  onClick,
+}: ButtonProps) => {
+  return (
+    <button  onClick={onClick} className="aiBtn">
+      <p>
+        {text}
+      </p>
+    </button>
+  )
+}
+
+export const chevronBtn = ({
+  icon,
+  onClick
+}: ButtonProps) => (
+  return (
+    <button onClick={onClick} className="aiBtn">
+      <p>
+        {icon}
+      </p>
+    </button>
+  )
+)
+
+// export const promptBtn ({
+//   icon,
+//   onClick
+// }: ButtonProps) => {
+//   return (
+//     <button onClick={onClick} className="prompt">
+//       {icon}
+//     </button>
+//   )
+// }

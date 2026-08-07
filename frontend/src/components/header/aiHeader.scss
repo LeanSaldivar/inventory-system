@@ -1,0 +1,110 @@
+@use "../../styles/base/variables" as *;
+@use "../../styles/base/mixins" as *;
+
+.ai-header {
+    @include flex();
+    align-items: center;
+    justify-content: space-between;
+
+    border-radius: 20px;
+    padding: 1rem;
+
+
+    background: $gradient2;
+    background: $gradient-backup2;
+
+    .text-wrapper {
+        @include flex();
+        align-items: center;
+
+        .ai-logo {
+            padding: .5rem 0.5rem 0.3rem 0.5rem;
+            border-radius: 20px;
+            background-color: $light-blue2;
+
+            .ai-icon {
+                color: $light-blue3
+            }
+        }
+
+        .text {
+            @include flex(column, 0);
+
+            p {
+                font-size: 0.938rem;
+                font-weight: 600;
+                color: $light;
+            }
+
+            span {
+                font-size: 0.688rem;
+                color: $span-color1;
+            }
+        }
+    }
+
+    .dropdown {
+        @include flex();
+
+
+        .online-wrapper {
+            background-color: $green;
+
+            .circle {
+                background-color: $light-green;
+                border-radius: 50%;
+                width: 10px;
+                height: 10px;
+            }
+
+            span {
+                color: $light-green;
+                font-size: 0.688rem;
+                font-weight: 600;
+            }
+        }
+
+        .down-icon {
+            color: $light-blue3;
+        }
+    }
+}
+
+.ai-subheader {
+    @include flex();
+    align-items: center;
+
+
+
+    .button-wrapper {
+        @include flex();
+        justify-content: space-evenly;
+        width: 100%;
+
+        .btn-1,
+        .btn-2 {
+            display: flex;
+            flex: 1;
+
+            justify-content: center;
+
+            button {
+                &:active p {
+                    color: $blue;
+                    border-bottom-color: $blue;
+
+                    transition: $transition-normal;
+                }
+
+                &:hover p {
+                    color: $dark;
+                    border-bottom-color: $blue;
+
+                    cursor: pointer;
+                    transition: $transition-normal;
+                }
+            }
+
+        }
+    }
+}

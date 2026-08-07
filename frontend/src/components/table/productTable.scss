@@ -1,0 +1,63 @@
+@use "../../styles/base/mixins" as *;
+@use "../../styles/base/variables" as *;
+
+.product-item {
+    @include flex();
+    align-items: center;
+
+    .num {
+        display: inline-flex;
+        align-items: center;
+
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+
+        background-color: $gold;
+        color: $dark-gold;
+
+        font-weight: 600
+    }
+
+    .product-wrapper {
+        @include flex(column, 0.5rem);
+
+        .product-text {
+            @include flex();
+            justify-content: space-between;
+            max-width: 67rem;
+
+            p {
+                font-weight: 600;
+                color: $dark;
+                font-size: 0.938rem;
+            }
+
+            span {
+                color: $menu-color;
+                font-size: 0.813rem;
+            }
+        }
+
+        .progress {
+            background-color: $dark-blue;
+            width: 67rem;
+            height: 10px;
+
+            border-radius: 20px;
+        }
+
+
+    }
+
+    .price {
+        @include flex();
+        margin-left: auto;
+        align-self: center;
+
+        p {
+            font-weight: 600;
+            font-size: 0.813rem;
+            color: $dark-blue;
+        }
+    }
+}

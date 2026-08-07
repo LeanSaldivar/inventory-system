@@ -1,0 +1,35 @@
+@use '../../styles/base/variables' as *;
+@use '../../styles/base/mixins' as *;
+
+
+.profile {
+    @include flex();
+    align-items: center;
+    margin-left: 0.5rem;
+
+    .initials {
+        background-color: $initials-color2;
+        color: $initials-txt-color2;
+        padding: 0.5rem;
+        border-radius: 50%;
+        font-weight: 600;
+
+    }
+
+    .text {
+        @include flex(column, 0.1rem);
+        transition:
+            opacity .2s ease,
+            width .2s ease;
+
+        p {
+            font-size: 0.813rem;
+            color: $light;
+        }
+
+        span {
+            font-size: 0.625rem;
+            color: $span-color-2;
+        }
+    }
+}
