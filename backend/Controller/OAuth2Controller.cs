@@ -29,8 +29,14 @@ public class OAuth2Controller : ControllerBase
     [ProducesResponseType(StatusCodes.Status302Found)]
     public IActionResult GoogleLogin([FromQuery] string? returnUrl = "/")
     {
+        // This is where the user goes AFTER the middleware is done processing /signin-google
         var redirectUrl = Url.Action(nameof(GoogleCallback), "OAuth2", new { returnUrl });
-        var properties = _signInManager.ConfigureExternalAuthenticationProperties(GoogleDefaults.AuthenticationScheme, redirectUrl!);
+
+        var properties = _signInManager.ConfigureExternalAuthenticationProperties(
+            GoogleDefaults.AuthenticationScheme,
+            redirectUrl!
+        );
+
         return Challenge(properties, GoogleDefaults.AuthenticationScheme);
     }
 
@@ -63,7 +69,7 @@ public class OAuth2Controller : ControllerBase
         {
             user = new User
             {
-                UserName = email,
+                UserName = name,
                 Email = email,
                 CreatedAt = DateTime.UtcNow,
                 UserRole = UserRole.Viewer
