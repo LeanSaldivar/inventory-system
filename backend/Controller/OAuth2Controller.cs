@@ -29,15 +29,13 @@ public class OAuth2Controller : ControllerBase
     [ProducesResponseType(StatusCodes.Status302Found)]
     public IActionResult GoogleLogin([FromQuery] string? returnUrl = "/")
     {
-        // This is where the user goes AFTER the middleware is done processing /signin-google
+        // Point to the scheme name defined in Program.cs
+        string scheme = "GoogleOpenID";
+
         var redirectUrl = Url.Action(nameof(GoogleCallback), "OAuth2", new { returnUrl });
+        var properties = _signInManager.ConfigureExternalAuthenticationProperties(scheme, redirectUrl!);
 
-        var properties = _signInManager.ConfigureExternalAuthenticationProperties(
-            GoogleDefaults.AuthenticationScheme,
-            redirectUrl!
-        );
-
-        return Challenge(properties, GoogleDefaults.AuthenticationScheme);
+        return Challenge(properties, scheme);
     }
 
     [HttpGet("google/callback")]
@@ -53,7 +51,7 @@ public class OAuth2Controller : ControllerBase
         }
 
         var externalPrincipal = authenticateResult.Principal;
-        var provider = authenticateResult.Properties?.Items["LoginProvider"] ?? GoogleDefaults.AuthenticationScheme;
+        var provider = authenticateResult.Properties?.Items["LoginProvider"] ?? "GoogleOpenID";
         var providerKey = externalPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
         var email = externalPrincipal.FindFirstValue(ClaimTypes.Email);
         var name = externalPrincipal.FindFirstValue(ClaimTypes.Name) ?? email;
@@ -86,7 +84,7 @@ public class OAuth2Controller : ControllerBase
         var existingLogin = await _userManager.FindByLoginAsync(provider, providerKey);
         if (existingLogin == null)
         {
-            var info = new UserLoginInfo(provider, providerKey, GoogleDefaults.DisplayName);
+            var info = new UserLoginInfo(provider, providerKey, provider);
             var addLoginResult = await _userManager.AddLoginAsync(user, info);
             if (!addLoginResult.Succeeded)
             {
