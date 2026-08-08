@@ -6,9 +6,11 @@ using backend.model;
 using DotNetEnv;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OAuth;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using Microsoft.IdentityModel.Tokens;
 Env.Load();
 
 
@@ -61,8 +63,8 @@ builder.Services.ConfigureApplicationCookie(options =>
 builder.Services.ConfigureExternalCookie(options =>
 {
     options.Cookie.HttpOnly = true;
-    options.Cookie.SameSite = SameSiteMode.Lax; // Change to Lax
-    options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+    options.Cookie.SameSite = SameSiteMode.None;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
 });
 
 builder.Services.AddAuthorization(options =>
@@ -89,19 +91,42 @@ builder.Services.AddCors(options =>
 
 builder.Services
     .AddAuthentication()
-    .AddGoogle(options =>
+    .AddOpenIdConnect("GoogleOpenID", "Google Login", options =>
     {
+        options.Authority = "https://accounts.google.com";
+
         options.ClientId = Environment.GetEnvironmentVariable("GOOGLE_CLIENT_ID") ?? throw new InvalidOperationException("GOOGLE_CLIENT_ID is not set.");
         options.ClientSecret = Environment.GetEnvironmentVariable("GOOGLE_CLIENT_SECRET") ?? throw new InvalidOperationException("GOOGLE_CLIENT_SECRET is not set.");
+
+        options.SignInScheme = IdentityConstants.ExternalScheme; 
+
+        options.ResponseType = OpenIdConnectResponseType.Code;
+
         options.CallbackPath = "/signin-google";
+
+        options.Scope.Add("openid");
         options.Scope.Add("profile");
         options.Scope.Add("email");
 
+        // Important for Identity integration
+        options.SaveTokens = true;
+        options.GetClaimsFromUserInfoEndpoint = true;
+
+        options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+        {
+            NameClaimType = "name",
+            ValidateIssuer = true
+        };
+
         options.CorrelationCookie.HttpOnly = true;
-        options.CorrelationCookie.SameSite = SameSiteMode.Lax; // Use Lax instead of None
+        options.CorrelationCookie.SameSite = SameSiteMode.None;
         options.CorrelationCookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
 
-        options.Events = new OAuthEvents
+        options.NonceCookie.HttpOnly = true;
+        options.NonceCookie.SameSite = SameSiteMode.None;
+        options.NonceCookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+
+        options.Events = new OpenIdConnectEvents
         {
             OnRemoteFailure = context =>
             {
@@ -116,11 +141,11 @@ builder.Services
                 context.HandleResponse();
                 return context.Response.WriteAsJsonAsync(new { message = "External authentication failed.", error = context.Failure?.Message });
             },
-            OnCreatingTicket = context =>
+            OnTokenValidated = context =>
             {
                 var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<Program>>();
-                logger.LogInformation("Google creating ticket for user {Email}", context.Principal?.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value);
-                logger.LogInformation("Google auth provider: {Provider}", context.Options.ClaimsIssuer);
+                logger.LogInformation("Google token validated for user {Email}", context.Principal?.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value);
+                logger.LogInformation("Google auth provider: {Provider}", context.Options.Authority);
                 return Task.CompletedTask;
             }
         };
