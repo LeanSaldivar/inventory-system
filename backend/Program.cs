@@ -1,10 +1,11 @@
-using System.Text.Json; 
+using System.Text.Json;
 using backend.data;
 using backend.Mapper;
 using backend.middleware;
 using backend.model;
 using DotNetEnv;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -52,11 +53,16 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
     options.SlidingExpiration = true;
     options.Cookie.HttpOnly = true;
-    options.Cookie.SameSite = SameSiteMode.None;
+    options.Cookie.SameSite = SameSiteMode.Lax; // Change to Lax for local dev
     options.Cookie.Name = "AuthToken";
-    options.Cookie.SecurePolicy = builder.Environment.IsDevelopment()
-        ? CookieSecurePolicy.None
-        : CookieSecurePolicy.Always;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+});
+
+builder.Services.ConfigureExternalCookie(options =>
+{
+    options.Cookie.HttpOnly = true;
+    options.Cookie.SameSite = SameSiteMode.Lax; // Change to Lax
+    options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
 });
 
 builder.Services.AddAuthorization(options =>
@@ -87,9 +93,37 @@ builder.Services
     {
         options.ClientId = Environment.GetEnvironmentVariable("GOOGLE_CLIENT_ID") ?? throw new InvalidOperationException("GOOGLE_CLIENT_ID is not set.");
         options.ClientSecret = Environment.GetEnvironmentVariable("GOOGLE_CLIENT_SECRET") ?? throw new InvalidOperationException("GOOGLE_CLIENT_SECRET is not set.");
-        options.CallbackPath = "/api/oauth2/auth/google/callback";
+        options.CallbackPath = "/signin-google";
         options.Scope.Add("profile");
         options.Scope.Add("email");
+
+        options.CorrelationCookie.HttpOnly = true;
+        options.CorrelationCookie.SameSite = SameSiteMode.Lax; // Use Lax instead of None
+        options.CorrelationCookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+
+        options.Events = new OAuthEvents
+        {
+            OnRemoteFailure = context =>
+            {
+                var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<Program>>();
+                logger.LogError(context.Failure, "Google remote login failure");
+                logger.LogError("Remote failure path: {Path}", context.Request.Path);
+                logger.LogError("Remote failure query: {Query}", context.Request.QueryString);
+                logger.LogError("Remote failure redirect URI: {CallbackPath}", context.Options.CallbackPath);
+                logger.LogError("Remote failure state: {State}", context.Request.Query["state"].ToString());
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                context.Response.ContentType = "application/json";
+                context.HandleResponse();
+                return context.Response.WriteAsJsonAsync(new { message = "External authentication failed.", error = context.Failure?.Message });
+            },
+            OnCreatingTicket = context =>
+            {
+                var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<Program>>();
+                logger.LogInformation("Google creating ticket for user {Email}", context.Principal?.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value);
+                logger.LogInformation("Google auth provider: {Provider}", context.Options.ClaimsIssuer);
+                return Task.CompletedTask;
+            }
+        };
     });
 
 
@@ -140,7 +174,8 @@ app.UseExceptionHandler(errorApp =>
 
 
 
-if (app.Environment.IsDevelopment())
+var enableHttpsRedirection = !app.Environment.IsDevelopment() || builder.Configuration.GetValue<int?>("ASPNETCORE_HTTPS_PORT").HasValue;
+if (enableHttpsRedirection)
 {
     app.UseHttpsRedirection();
 }
