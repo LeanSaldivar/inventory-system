@@ -42,7 +42,7 @@ public class AppDataContext : IdentityDbContext<User, IdentityRole<int>, int>
                 .HasMaxLength(100);
 
             entity.Property(x => x.PasswordHash)
-                .IsRequired();
+                .IsRequired(false);
 
             entity.HasIndex(x => x.UserName)
                 .IsUnique();
