@@ -57,6 +57,7 @@ public class AuthControllerController : ControllerBase
 
             //Create new user
             var newUser = _mapper.Map<User>(registerRequest);
+            newUser.UserRole = UserRole.Viewer; // Default role
             newUser.PasswordHash = _hash.HashPassword(registerRequest.Password);
             newUser.CreatedAt = DateTime.UtcNow;
 

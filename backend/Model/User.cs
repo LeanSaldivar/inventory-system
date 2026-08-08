@@ -5,13 +5,74 @@ using Microsoft.AspNetCore.Identity;
 namespace backend.model;
 
 
+public enum UserRole
+{
+    Owner,
+    Cashier,
+    Pharmacist,
+    Viewer
+
+}
+
 
 public class User : IdentityUser<int>
 {
+    /// <summary>
+    /// Constructor.
+    /// </summary>
+    public User()
+    {
+        AvatarUri = new AvatarInfo();
+    }
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     public DateTime? LastLoginAt { get; set; }
+
+    [Required]
+    public UserRole UserRole { get; set; } = UserRole.Viewer;
+
+    /// <summary>
+    /// Contains URIs of different sizes of avatar.
+    /// </summary>
+    public AvatarInfo AvatarUri { get; private set; }
+
+    /// <summary>
+    /// Photo URI.
+    /// </summary>
+    public string? PhotoUri
+    {
+        get { return AvatarUri.Normal; }
+    }
+}
+
+/// <summary>
+/// Contains URIs for different sizes of a user's avatar image.
+/// </summary>
+public class AvatarInfo
+{
+
+    public int Id { get; set; }
+    /// <summary>
+    /// Image size constants.
+    /// </summary>
+    internal const int SmallSize = 36;
+    internal const int LargeSize = 300;
+
+    /// <summary>
+    /// Uri of small photo.
+    /// </summary>
+    public string? Small { get; set; }
+
+    /// <summary>
+    /// Uri of normal photo.
+    /// </summary>
+    public string? Normal { get; set; }
+
+    /// <summary>
+    /// Uri of large photo.
+    /// </summary>
+    public string? Large { get; set; }
 }
 
 public class LoginRequest
@@ -30,11 +91,16 @@ public class LoginRequest
 public class UserResponse
 {
     public int UserId { get; set; }
+
+    public string? Email { get; set; }
+
     public string UserName { get; set; } = null!;
 
     public DateTime CreatedAt { get; set; }
 
     public DateTime? LastLoginAt { get; set; }
+
+    public UserRole UserRole { get; set; }
 
 
 }
