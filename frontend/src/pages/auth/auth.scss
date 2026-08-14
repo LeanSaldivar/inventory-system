@@ -43,4 +43,26 @@
         margin-top: 1rem;
         justify-content: flex-end;
     }
+
+    .btn-wrapper {
+        @include flex(column);
+
+        .google {
+            color: $dark;
+            background-color: $light;
+            border-radius: 20px;
+
+
+            border: 1px solid $gray-bg;
+
+            padding: 1rem;
+
+            text-align: center;
+
+            &:hover {
+                cursor: pointer;
+                opacity: 0.6;
+            }
+        }
+    }
 }   
