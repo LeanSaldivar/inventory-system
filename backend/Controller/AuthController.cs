@@ -4,6 +4,7 @@ using AutoMapper.QueryableExtensions;
 using backend.data;
 using backend.middleware;
 using backend.model;
+using backend.Model;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -15,16 +16,16 @@ namespace backend.controller;
 
 [ApiController]
 [Route("api/auth")]
-public class AuthControllerController : ControllerBase
+public class AuthController : ControllerBase
 {
 
-    private readonly ILogger<AuthControllerController> _logger;
+    private readonly ILogger<AuthController> _logger;
     private readonly IHash _hash;
     private readonly IMapper _mapper;
     private readonly AppDataContext _context;
 
-    public AuthControllerController(
-        ILogger<AuthControllerController> logger,
+    public AuthController(
+        ILogger<AuthController> logger,
         IHash hash,
         IMapper mapper,
         AppDataContext context)
@@ -180,6 +181,7 @@ public class AuthControllerController : ControllerBase
             var user = await _context.Users
                 .Where(u => u.UserName == userName)
                 .ProjectTo<UserResponse>(_mapper.ConfigurationProvider)
+                .Include(u => u.AvailableProducts)
                 .FirstOrDefaultAsync();
 
             if (user == null)
@@ -254,8 +256,4 @@ public class AuthControllerController : ControllerBase
                 new { message = "An error occurred while deleting the user.", error = ex.Message });
         }
     }
-
-
-
-
 }

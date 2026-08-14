@@ -8,7 +8,7 @@ export const AuthLayout = () => {
             <header className="auth-header">
 
                 <div className="iconLogo">
-                    <PillIcon  className="pillIconLogo" />
+                    <PillIcon width={"50px"} height={"50px"}  className="pillIconLogo" />
                 </div>
 
                 <h1>
@@ -19,7 +19,6 @@ export const AuthLayout = () => {
                     Inventory Management System
                 </span>
             </header>
-
             
             <Outlet />
         </div>

@@ -7,9 +7,6 @@ import { Sales } from './pages/inventory/sales';
 import { Login } from './pages/auth/login';
 import { Register } from './pages/auth/register';
 import { AuthLayout } from './layout/auth/authLayout';
-import { Ai } from './layout/ai/ai';
-import { Reccomend } from './pages/ai/reccomend';
-import { Prompt } from './pages/ai/prompt';
 
 export const App = () => {
   return (
@@ -25,12 +22,6 @@ export const App = () => {
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="products" element={<Products />} />
         <Route path="sales" element={<Sales />} />
-      </Route>
-
-      <Route path="/reisa/ai" element ={<Ai/>}>
-        <Route index element={<Reccomend />} />
-        <Route path="reccomend" element={<Reccomend />} />
-        <Route path="prompt" element={<Prompt />} />
       </Route>
     </Routes>
   )

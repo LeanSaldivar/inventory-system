@@ -96,14 +96,6 @@ public class OAuth2Controller : ControllerBase
         await _signInManager.SignInAsync(user, isPersistent: true);
         await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
-        return Ok(new
-        {
-            user.Id,
-            user.UserName,
-            user.Email,
-            user.UserRole,
-            user.CreatedAt,
-            user.LastLoginAt
-        });
+        return Redirect("http://localhost:5173/reisa/dashboard"); 
     }
 }

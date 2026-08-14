@@ -1,0 +1,85 @@
+@use "../../../styles/base/mixins" as *;
+@use "../../../styles/base/variables" as *;
+
+
+.add-product-modal-container {
+    @include flex(column);
+    margin: 2rem;
+
+    h3 {
+        color: $darker-blue;
+    }
+
+
+
+    .product-form {
+        @include flex(column);
+
+        label {
+            color: $span-color-2;
+            font-size: 0.688rem;
+            font-weight: 600;
+        }
+
+        input,
+        select {
+            background-color: $input-color;
+            padding: 1rem;
+            border-radius: 20px;
+            border: none;
+
+        }
+
+        select {
+            &:hover {
+                cursor: pointer;
+            }
+
+
+        }
+
+        .form-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+
+            .label-wrapper {
+                @include flex(column, 0.5rem);
+            }
+
+            .left,
+            .right {
+                @include flex(column);
+            }
+
+        }
+
+        .button-wrapper {
+            @include flex(row);
+            justify-content: flex-end;
+
+            button {
+                padding: 1rem;
+            }
+
+            p {
+                font-size: 0.813rem;
+                font-weight: 600;
+
+            }
+
+
+            .cancel {
+                color: $dark;
+                background-color: $light;
+                border: 1px solid $gray-bg;
+            }
+
+            .addProduct {
+                color: $light;
+                background-color: $blue;
+            }
+
+        }
+    }
+}

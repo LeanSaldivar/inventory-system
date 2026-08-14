@@ -1,0 +1,193 @@
+@use "../../styles/base/mixins" as *;
+@use "../../styles/base/variables" as *;
+
+.pos-container {
+    @include flex(column, 0);
+    overflow: hidden;
+
+    .pos-wrapper {
+        display: grid;
+        grid-template-columns: 4fr 1fr;
+        min-height: 0;
+        height: calc(100vh - 120px);
+    }
+
+    .pos-content {
+        @include flex(column, 0);
+        min-height: 0;
+        overflow: hidden;
+    }
+
+    .pos-sidebar {
+        display: flex;
+        flex-direction: column;
+
+        width: 20vw;
+        height: 90vh;
+        padding: 25px;
+
+        background: #fff;
+        border: 1px solid #eee;
+    }
+
+    .search-bar {
+        background-color: $light;
+        @include flex(column, 0.5rem);
+        padding: 1rem;
+
+        .pos-search {
+            background-color: $input-color;
+            padding: 1rem;
+            width: 100%;
+            border-radius: 20px;
+            border: solid 1px $input-edge;
+        }
+
+        .categories {
+            display: flex;
+
+            padding: 1rem;
+
+            align-items: center;
+            gap: 10px;
+            background: #fff;
+
+            overflow-x: auto;
+            overflow-y: hidden;
+
+            white-space: nowrap;
+
+            .cat-btn {
+                padding: 8px 20px;
+
+                background: #fff;
+                border: 1px solid #ddd;
+                border-radius: 20px;
+
+                cursor: pointer;
+
+                &.active {
+                    background: #2563eb;
+                    color: #fff;
+                    border-color: #2563eb;
+                }
+            }
+
+            &::-webkit-scrollbar {
+                height: 6px;
+            }
+
+            &::-webkit-scrollbar-thumb {
+                background: #d1d5db;
+                border-radius: 10px;
+            }
+
+            &::-webkit-scrollbar-track {
+                background: transparent;
+            }
+        }
+    }
+
+
+
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        flex: 1;
+        margin: 1rem;
+        gap: 20px;
+        min-height: 0;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding-right: 0.25rem;
+
+        &::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: #d1d5db;
+            border-radius: 10px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: transparent;
+        }
+    }
+
+
+
+    .cart-empty {
+        flex-grow: 1;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        color: #ccc;
+
+        .cart-icon {
+            margin-bottom: 10px;
+            font-size: 60px;
+        }
+    }
+
+    .total-row {
+        display: flex;
+        justify-content: space-between;
+
+
+        font-weight: bold;
+
+        .price-blue {
+            color: #2563eb;
+            font-size: 26px;
+        }
+    }
+
+    .btn-complete {
+        width: 100%;
+        padding: 15px;
+
+        background: #e0e7ff;
+        color: #9ab4c1;
+
+        border: none;
+        border-radius: 12px;
+
+        font-weight: bold;
+    }
+
+    .action-btn {
+        padding: 5px;
+        margin-right: 8px;
+
+        background: none;
+        border: none;
+
+        cursor: pointer;
+
+        font-size: 18px;
+
+        opacity: 0.6;
+
+        transition:
+            transform 0.2s,
+            opacity 0.2s;
+
+        &:hover {
+            transform: scale(1.2);
+            opacity: 1;
+        }
+
+        &.edit-btn:hover {
+            color: #2563eb;
+        }
+
+        &.delete-btn:hover {
+            color: #ef4444;
+        }
+    }
+
+}

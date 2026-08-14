@@ -90,3 +90,27 @@
     background-color: $blue;
     padding: 1rem;
 }
+
+.svgBtn {
+    border-radius: 20px;
+    padding: 1rem 1rem 0.8rem 1rem;
+    background-color: $light-blue4;
+}
+
+.categBtn {
+    flex-shrink: 0;
+    padding: 8px 20px;
+
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+
+    cursor: pointer;
+
+    &.active {
+        background: #2563eb;
+        color: #fff;
+        border-color: #2563eb;
+    }
+
+}

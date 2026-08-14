@@ -39,7 +39,13 @@ export const Login = () => {
                     required
                 />
 
-                <AuthBtn text="Sign-in" />
+                <div className="btn-wrapper">
+                    <AuthBtn text="Sign-in" />
+
+                    <a href="https://localhost:7153/api/oauth2/auth/google" className="google">
+                        Continue to Google
+                    </a>
+                </div>
 
                 <div className="register-link">
                     <Link to="/auth/register" className="register">

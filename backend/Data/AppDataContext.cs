@@ -1,4 +1,5 @@
 using backend.model;
+using backend.Model;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +19,7 @@ public class AppDataContext : IdentityDbContext<User, IdentityRole<int>, int>
     }
 
     public override DbSet<User> Users { get; set; }
+    public DbSet<Product> Products { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -63,6 +65,51 @@ public class AppDataContext : IdentityDbContext<User, IdentityRole<int>, int>
 
                 avatar.Ignore(a => a.Id);
             });
+
+            entity.HasMany(u => u.Products)
+                .WithOne(p => p.User)
+                .HasForeignKey(p => p.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<Product>(entity =>
+        {
+            entity.ToTable("Products");
+
+            entity.Property(u => u.Id)
+            .HasColumnName("ProductId");
+
+            entity.Property(u => u.Id)
+                  .UseIdentityByDefaultColumn(); // PostgreSQL strategy
+
+            entity.Property(u => u.ProductName)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            entity.Property(u => u.ProductBrand)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            entity.Property(u => u.ProductCategory)
+            .HasConversion<string>() // Store enum as string
+                .IsRequired()
+                .HasMaxLength(50);
+
+            entity.Property(u => u.ProductUnit)
+            .HasConversion<string>() // Store enum as string
+                .IsRequired()
+                .HasMaxLength(50);
+
+            entity.Property(u => u.ProductQuantity)
+                .IsRequired();
+
+            entity.Property(u => u.ProductPrice)
+                .IsRequired()
+                .HasColumnType("decimal(18,2)"); // Adjust precision and scale as needed
+
+            entity.Property(u => u.ProductStatus)
+            .HasConversion<string>() // Store enum as string
+                .HasMaxLength(50);
         });
     }
 
