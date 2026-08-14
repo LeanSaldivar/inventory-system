@@ -144,6 +144,63 @@ namespace backend.Data.migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("backend.Model.Product", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("ProductId")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("LastUpdatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ProductBrand")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ProductCategory")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("ProductExpiry")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ProductName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("ProductPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("ProductQuantity")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ProductStatus")
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ProductUnit")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Products", (string)null);
+                });
+
             modelBuilder.Entity("backend.model.User", b =>
                 {
                     b.Property<int>("Id")
@@ -277,6 +334,17 @@ namespace backend.Data.migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("backend.Model.Product", b =>
+                {
+                    b.HasOne("backend.model.User", "User")
+                        .WithMany("Products")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("backend.model.User", b =>
                 {
                     b.OwnsOne("backend.model.AvatarInfo", "AvatarUri", b1 =>
@@ -309,6 +377,11 @@ namespace backend.Data.migrations
 
                     b.Navigation("AvatarUri")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("backend.model.User", b =>
+                {
+                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }
