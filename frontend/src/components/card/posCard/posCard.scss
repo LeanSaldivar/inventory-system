@@ -1,0 +1,53 @@
+@use "../../../styles/base/variables" as *;
+@use "../../../styles/base/mixins" as *;
+
+.p-card {
+    padding: 25px;
+
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 20px;
+
+    text-align: left;
+
+    transition:
+        transform 0.2s,
+        border-color 0.2s;
+
+    &:hover {
+        border-color: #2563eb;
+        transform: translateY(-3px);
+    }
+
+    .p-icon {
+        width: 20px;
+        height: 20px;
+        color: $blue;
+
+    }
+
+    h4 {
+        margin-bottom: 5px;
+        font-size: 15px;
+    }
+
+    p {
+        margin-bottom: 15px;
+
+        color: #aaa;
+        font-size: 12px;
+    }
+
+    .price {
+        color: #2563eb;
+        font-size: 20px;
+        font-weight: 800;
+    }
+
+    .p-stock {
+        margin-top: 10px;
+
+        color: #bbb;
+        font-size: 10px;
+    }
+}
