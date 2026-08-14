@@ -1,7 +1,7 @@
 import "./btn.scss"
 
 type ButtonProps = {
-  text: string;
+  text?: string;
   icon?: React.ReactNode;
   onClick?: () => void;
 };
@@ -50,7 +50,7 @@ export const AiBtn = ({
   onClick,
 }: ButtonProps) => {
   return (
-    <button  onClick={onClick} className="aiBtn">
+    <button onClick={onClick} className="aiBtn">
       <p>
         {text}
       </p>
@@ -58,18 +58,53 @@ export const AiBtn = ({
   )
 }
 
-export const chevronBtn = ({
+export const SvgBtn = ({
   icon,
-  onClick
-}: ButtonProps) => (
+  onClick,
+}: ButtonProps) => {
   return (
-    <button onClick={onClick} className="aiBtn">
-      <p>
+    <button onClick={onClick} className="svgBtn">
         {icon}
+    </button>
+  )
+}
+
+export const CategBtn = ({
+  text,
+  onClick,
+}: ButtonProps) => {
+  return (
+    <button onClick={onClick} className="categBtn">
+      <p>
+        {text}
       </p>
     </button>
   )
-)
+}
+
+export const ActionBtn = ({
+  icon,
+  onClick,
+}: ButtonProps) => {
+  return (
+    <button onClick={onClick} className="actions-btn">
+      {icon}
+    </button>
+  )
+}
+
+// export const chevronBtn = ({
+//   icon,
+//   onClick
+// }: ButtonProps) => (
+//   return (
+//     <button onClick={onClick} className="aiBtn">
+//       <p>
+//         {icon}
+//       </p>
+//     </button>
+//   )
+// )
 
 // export const promptBtn ({
 //   icon,
