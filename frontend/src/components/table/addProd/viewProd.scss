@@ -1,0 +1,42 @@
+@use "../../../styles/base/variables" as *;
+@use "../../../styles/base/mixins" as *;
+
+td {
+    padding: 15px;
+
+    border-top: 1px solid #eee;
+
+    font-size: 14px;
+
+    small {
+        color: #aaa;
+    }
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    padding: 4px 12px;
+
+    border-radius: 20px;
+
+    font-size: 11px;
+    font-weight: bold;
+
+    &.badge-high {
+        background: #e6f7ef;
+        color: #10b981;
+    }
+
+    &.badge-low {
+        background: #fee2e2;
+        color: #ef4444;
+    }
+}
+
+.btn-wrapper {
+    @include flex(row, 0.5rem);
+    
+}
