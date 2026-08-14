@@ -1,5 +1,6 @@
 //using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
+using backend.Model;
 using Microsoft.AspNetCore.Identity;
 
 namespace backend.model;
@@ -44,6 +45,9 @@ public class User : IdentityUser<int>
     {
         get { return AvatarUri.Normal; }
     }
+
+    //One to Many Relationship with products
+    public ICollection<Product> Products { get; set; } = [];
 }
 
 /// <summary>
@@ -101,6 +105,9 @@ public class UserResponse
     public DateTime? LastLoginAt { get; set; }
 
     public UserRole UserRole { get; set; }
+
+    public ICollection<ProductInventoryResponseDTO> AvailableProducts { get; set; } = new List<ProductInventoryResponseDTO>();
+    
 
 
 }
