@@ -65,9 +65,15 @@ public class Product
 
     public DateTime? ProductExpiry { get; set; }
 
+
     //Nav properties
     public int UserId { get; set; }
     public User User { get; set; } = null!;
+
+    //Many to Many with RecieptItems
+    public ICollection<ReceiptItem> ProductItems { get; set; } = [];
+
+
 }
 
 
@@ -91,6 +97,7 @@ public class ProductInventoryRequestDTO
     [Display(Name = "Product Unit")]
     public ProductUnit ProductUnit { get; set; }
 
+
     [Required]
     [Display(Name = "Product Quantity")]
     public int ProductQuantity { get; set; }
@@ -103,6 +110,9 @@ public class ProductInventoryRequestDTO
 public class ProductInventoryResponseDTO
 {
     public int Id { get; set; }
+
+    public string ProductCode => $"RX{Id:D4}";
+
     public string ProductName { get; set; } = string.Empty;
 
     public string ProductBrand { get; set; } = string.Empty;
