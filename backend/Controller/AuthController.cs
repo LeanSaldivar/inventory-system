@@ -190,7 +190,7 @@ public class AuthController : ControllerBase
                 return NotFound(new { message = "User not found." });
             }
 
-            return Ok(_mapper.Map<UserResponse>(user));
+            return Ok(user);
 
         }
         catch (Exception ex)
