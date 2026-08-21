@@ -1,13 +1,14 @@
 
+using System.Collections;
+using System.Security.Claims;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using backend.data;
 using backend.middleware;
 using backend.Model;
-using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authorization;
 
 namespace backend.controller;
 
@@ -42,19 +43,39 @@ public class InventoryController : ControllerBase
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
-        }   
+        }
 
         try
         {
+
             if (await _context.Products.AnyAsync(u => u.ProductName == productInventoryRequestDTO.ProductName))
             {
                 _logger.LogWarning($"Product Creation attempt with existing name: {productInventoryRequestDTO.ProductName}");
                 return Conflict(new { message = "Product Name is already taken. " });
             }
 
+            if (!Enum.IsDefined(productInventoryRequestDTO.ProductCategory))
+            {
+                _logger.LogWarning(
+                    "Product creation attempt with invalid category: {Category}",
+                    productInventoryRequestDTO.ProductCategory);
+
+                return BadRequest(new { message = "Invalid product category." });
+            }
+
+            if (!Enum.IsDefined(productInventoryRequestDTO.ProductUnit))
+            {
+                _logger.LogWarning(
+                    "Product creation attempt with invalid unit: {Category}",
+                    productInventoryRequestDTO.ProductCategory);
+
+                return BadRequest(new { message = "Invalid product unit." });
+            }
+
+
             var newProduct = _mapper.Map<Product>(productInventoryRequestDTO);
             newProduct.CreatedAt = DateTime.UtcNow;
-            newProduct.LastUpdatedAt = DateTime.UtcNow; 
+            newProduct.LastUpdatedAt = DateTime.UtcNow;
 
             // Associate product with the current authenticated user
             var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -73,7 +94,7 @@ public class InventoryController : ControllerBase
 
             var response = _mapper.Map<ProductInventoryResponseDTO>(newProduct);
             return CreatedAtAction(nameof(GetProduct), new { productName = newProduct.ProductName }, response);
-            
+
         }
         catch (Exception ex)
         {
@@ -87,12 +108,10 @@ public class InventoryController : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError,
                 new { message = "An error occurred during product creation.", error = ex.Message });
         }
-
-        return StatusCode(StatusCodes.Status501NotImplemented); //Delete this after your done with said method
     }
 
     /// <summary>
-    /// Creates a sale
+    /// View a product
     /// </summary>
     [HttpGet("{productName}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -102,9 +121,8 @@ public class InventoryController : ControllerBase
         try
         {
             var product = await _context.Products
-            .Where(u => u.ProductName == productName)
-            .ProjectTo<ProductSalesResponseDTO>(_mapper.ConfigurationProvider)
-            .FirstOrDefaultAsync();
+            .ProjectTo<ProductInventoryResponseDTO>(_mapper.ConfigurationProvider)
+            .FirstOrDefaultAsync(u => u.ProductName == productName);
 
             if (product == null)
             {
@@ -112,52 +130,14 @@ public class InventoryController : ControllerBase
                 return NotFound(new { message = "Product Not Found" });
             }
 
-            return Ok(_mapper.Map<ProductInventoryRequestDTO>(product));
+            return Ok(product);
 
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, $"Error getting user: {productName}");
+            _logger.LogError(ex, $"Error getting product: {productName}");
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
-    }
-
-
-
-
-    /// <summary>
-    /// Creates a sale
-    /// </summary>
-    [HttpPost("sale")]
-    [ProducesResponseType(StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status409Conflict)]
-    public async Task<ActionResult<ProductSalesResponseDTO>> CreateSale([FromBody] CreateSaleRequestDTO createSaleRequestDTO)
-    {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
-
-        try
-        {
-            //Code here
-
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error during sale creation");
-            Console.WriteLine($"SALE CREATION ERROR: {ex.Message}");
-            Console.WriteLine($"Stack Trace: {ex.StackTrace}");
-            if (ex.InnerException != null)
-            {
-                Console.WriteLine($"Inner Exception: {ex.InnerException.Message}");
-            }
-            return StatusCode(StatusCodes.Status500InternalServerError,
-                new { message = "An error occurred during sale creation.", error = ex.Message });
-        }
-
-        return StatusCode(StatusCodes.Status501NotImplemented); //Delete this after your done with said method
     }
 
     /// <summary>
@@ -171,16 +151,17 @@ public class InventoryController : ControllerBase
     {
         try
         {
-            //Code here
+            var products = await _context.Products
+            .ProjectTo<ProductInventoryResponseDTO>(_mapper.ConfigurationProvider)
+            .ToListAsync();
 
+            return Ok(products);
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error getting all products");
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
-
-        return StatusCode(StatusCodes.Status501NotImplemented); //Delete this after your done with said method
     }
 
     /// <summary>
@@ -195,61 +176,23 @@ public class InventoryController : ControllerBase
     {
         try
         {
-            //Code here
+            if (!Enum.TryParse<ProductCategory>(category, true, out var productCategory))
+            {
+                return BadRequest("Invalid product category.");
+            }
 
+            var products = await _context.Products
+            .Where(u => u.ProductCategory == productCategory)
+            .ProjectTo<ProductInventoryResponseDTO>(_mapper.ConfigurationProvider)
+            .ToListAsync();
+
+            return Ok(products);
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error getting all products");
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
-
-        return StatusCode(StatusCodes.Status501NotImplemented); //Delete this after your done with said method
-    }
-
-    /// <summary>
-    /// View possible sales to be made
-    /// </summary>
-    [HttpGet("sales")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    public async Task<ActionResult<IEnumerable<ProductSalesResponseDTO>>> GetAvailableSales()
-    {
-        try
-        {
-            //Code here
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error getting all products");
-            return StatusCode(StatusCodes.Status500InternalServerError);
-        }
-
-        return StatusCode(StatusCodes.Status501NotImplemented); //Delete this after your done with said method
-    }
-
-    /// <summary>
-    /// View possible Sale based on category
-    /// </summary>
-    [HttpGet("sales/{category}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<IEnumerable<ProductSalesResponseDTO>>> GetSalesByCategory(string category)
-    {
-        try
-        {
-            //Code here
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error getting all products");
-            return StatusCode(StatusCodes.Status500InternalServerError);
-        }
-
-        return StatusCode(StatusCodes.Status501NotImplemented); //Delete this after your done with said method
     }
 
     /// <summary>
@@ -264,8 +207,18 @@ public class InventoryController : ControllerBase
     {
         try
         {
-            //Code here
+            var products = await _context.Products.FindAsync(id);
+            if (products == null)
+            {
+                _logger.LogWarning($"Attempt to delete non-existet product with ID: {id}");
+                return NotFound(new { message = "User Not Found" });
+            }
 
+            _context.Products.Remove(products);
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation($"Product deleted: {products.ProductName}");
+            return NoContent();
         }
 
         catch (Exception ex)
@@ -275,8 +228,5 @@ public class InventoryController : ControllerBase
                 new { message = "An error occurred while deleting the product.", error = ex.Message });
         }
 
-        return StatusCode(StatusCodes.Status501NotImplemented); //Delete this after your done with said method
     }
 }
-
-//uh goodluck ig HAHAHAHAH
