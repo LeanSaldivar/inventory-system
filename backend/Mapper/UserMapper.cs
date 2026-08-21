@@ -21,5 +21,10 @@ public class UserMapper : Profile
         CreateMap<Product, ProductInventoryResponseDTO>();
 
         CreateMap<ProductInventoryRequestDTO, Product>();
+
+        CreateMap<ReceiptItem, ReceiptItemResponse>()
+            .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product.ProductName));
+        CreateMap<ReceiptItemRequest, ReceiptItem>();
+        CreateMap<Receipt, ReceiptResponse>();
     }
 }
