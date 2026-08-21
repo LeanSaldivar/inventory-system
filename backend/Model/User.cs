@@ -48,6 +48,9 @@ public class User : IdentityUser<int>
 
     //One to Many Relationship with products
     public ICollection<Product> Products { get; set; } = [];
+
+    //One to Many Relationship with Receipts
+    public ICollection<Receipt> Receipt { get; set; } = [];
 }
 
 /// <summary>
