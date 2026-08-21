@@ -21,6 +21,10 @@ public class AppDataContext : IdentityDbContext<User, IdentityRole<int>, int>
     public override DbSet<User> Users { get; set; }
     public DbSet<Product> Products { get; set; }
 
+    public DbSet<Receipt> Receipts { get; set; }
+
+    public DbSet<ReceiptItem> ReceiptItems { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -66,7 +70,14 @@ public class AppDataContext : IdentityDbContext<User, IdentityRole<int>, int>
                 avatar.Ignore(a => a.Id);
             });
 
+            //One to Many
             entity.HasMany(u => u.Products)
+                .WithOne(p => p.User)
+                .HasForeignKey(p => p.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            //One to Many
+            entity.HasMany(u => u.Receipt)
                 .WithOne(p => p.User)
                 .HasForeignKey(p => p.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
@@ -110,8 +121,60 @@ public class AppDataContext : IdentityDbContext<User, IdentityRole<int>, int>
             entity.Property(u => u.ProductStatus)
             .HasConversion<string>() // Store enum as string
                 .HasMaxLength(50);
+
+            entity.HasMany(u => u.ProductItems)
+            .WithOne(p => p.Product)
+            .HasForeignKey(p => p.ProductId)
+            .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<Receipt>(entity =>
+        {
+            entity.ToTable("Receipts");
+
+            entity.Property(u => u.ReceiptId)
+            .HasColumnName("ReceiptId");
+
+            entity.Property(u => u.Subtotal)
+            .IsRequired();
+
+            entity.Property(u => u.Discount)
+            .IsRequired();
+
+            entity.Property(u => u.Total)
+            .IsRequired();
+
+            entity.HasMany(u => u.Items)
+            .WithOne(p => p.Receipt)
+            .HasForeignKey(p => p.ReceiptId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        });
+
+        modelBuilder.Entity<ReceiptItem>(entity =>
+        {
+            entity.ToTable("ReceiptItems");
+
+            entity.Property(u => u.ReceiptItemId)
+            .HasColumnName("ReceiptItemId");
+
+            entity.Property(u => u.Subtotal)
+            .IsRequired();
+
+            entity.Property(u => u.Quantity)
+            .IsRequired();
+
+            entity.Property(u => u.UnitPrice)
+            .IsRequired();
+
+            entity.Property(u => u.Subtotal)
+           .IsRequired();
+
+
         });
     }
+
+
 
 
 
