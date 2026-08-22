@@ -39,6 +39,7 @@ public class ReceiptItemResponse
 
     public string ProductName { get; set; } = string.Empty;
 
+    public ProductStatus ProductStatus { get; set; }
 
     public int Quantity { get; set; }
 
