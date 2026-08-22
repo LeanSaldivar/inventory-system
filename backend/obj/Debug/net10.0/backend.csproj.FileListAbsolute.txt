@@ -520,7 +520,6 @@ C:\Users\lean\Documents\VSCode Projects\inventory-system\backend\bin\Debug\net10
 C:\Users\lean\Documents\VSCode Projects\inventory-system\backend\bin\Debug\net10.0\runtimes\win-x86\native\e_sqlite3.dll
 C:\Users\lean\Documents\VSCode Projects\inventory-system (Saas)\backend\bin\Debug\net10.0\appsettings.Development.json
 C:\Users\lean\Documents\VSCode Projects\inventory-system (Saas)\backend\bin\Debug\net10.0\backend.staticwebassets.endpoints.json
-C:\Users\lean\Documents\VSCode Projects\inventory-system (Saas)\backend\bin\Debug\net10.0\backend.exe
 C:\Users\lean\Documents\VSCode Projects\inventory-system (Saas)\backend\bin\Debug\net10.0\backend.deps.json
 C:\Users\lean\Documents\VSCode Projects\inventory-system (Saas)\backend\bin\Debug\net10.0\backend.runtimeconfig.json
 C:\Users\lean\Documents\VSCode Projects\inventory-system (Saas)\backend\bin\Debug\net10.0\backend.dll
@@ -800,3 +799,4 @@ C:\Users\lean\Documents\VSCode Projects\inventory-system (Saas)\backend\bin\Debu
 C:\Users\lean\Documents\VSCode Projects\inventory-system (Saas)\backend\bin\Debug\net10.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 C:\Users\lean\Documents\VSCode Projects\inventory-system (Saas)\backend\bin\Debug\net10.0\Microsoft.IdentityModel.Tokens.dll
 C:\Users\lean\Documents\VSCode Projects\inventory-system (Saas)\backend\bin\Debug\net10.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\lean\Documents\VSCode Projects\inventory-system (Saas)\backend\bin\Debug\net10.0\backend.exe

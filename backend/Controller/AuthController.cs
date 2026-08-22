@@ -56,8 +56,24 @@ public class AuthController : ControllerBase
                 return Conflict(new { message = "Username is already taken." });
             }
 
+            var email = registerRequest.Email.Trim();
+            var normalizedEmail = email.ToUpperInvariant();
+
+            // Check the normalized value so email uniqueness is case-insensitive.
+            if (await _context.Users.AnyAsync(u =>
+                u.NormalizedEmail == normalizedEmail ||
+                (u.Email != null && u.Email.ToUpper() == normalizedEmail)))
+            {
+                _logger.LogWarning($"Registration attempt with existing email: {email}");
+                return Conflict(new { message = "Email is already taken." });
+            }
+
+
+
             //Create new user
             var newUser = _mapper.Map<User>(registerRequest);
+            newUser.Email = email;
+            newUser.NormalizedEmail = normalizedEmail;
             newUser.UserRole = UserRole.Viewer; // Default role
             newUser.PasswordHash = _hash.HashPassword(registerRequest.Password);
             newUser.CreatedAt = DateTime.UtcNow;

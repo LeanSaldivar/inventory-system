@@ -1,12 +1,14 @@
 using System.ComponentModel.DataAnnotations;
 using backend.model;
+using backend.model;
 
 namespace backend.Model;
 
 public enum ProductStatus
 {
+    NoStocks,
     LowOnStocks,
-    Average,
+    AverageOnStocks,
     HighOnStocks
 };
 
@@ -65,6 +67,25 @@ public class Product
 
     public DateTime? ProductExpiry { get; set; }
 
+    public void UpdateStatus(InventorySetting settings)
+    {
+        if (ProductQuantity <= 0)
+        {
+            ProductStatus = Model.ProductStatus.NoStocks;
+        }
+        else if (ProductQuantity <= settings.LowStockThreshold)
+        {
+            ProductStatus = Model.ProductStatus.LowOnStocks;
+        }
+        else if (ProductQuantity <= settings.AverageStockThreshold)
+        {
+            ProductStatus = Model.ProductStatus.AverageOnStocks;
+        }
+        else
+        {
+            ProductStatus = Model.ProductStatus.HighOnStocks;
+        }
+    }
 
     //Nav properties
     public int UserId { get; set; }

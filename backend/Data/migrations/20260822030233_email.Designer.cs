@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using backend.data;
@@ -11,9 +12,11 @@ using backend.data;
 namespace backend.Data.migrations
 {
     [DbContext(typeof(AppDataContext))]
-    partial class AppDataContextModelSnapshot : ModelSnapshot
+    [Migration("20260822030233_email")]
+    partial class email
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.0");
@@ -142,37 +145,6 @@ namespace backend.Data.migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("backend.Model.InventorySetting", b =>
-                {
-                    b.Property<int>("InventorySettingId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("InventorySettingId");
-
-                    b.Property<int>("AverageStockThreshold")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("LowStockThreshold")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("InventorySettingId");
-
-                    b.ToTable("InventorySettings", null, t =>
-                        {
-                            t.HasCheckConstraint("CK_InventorySettings_LowLessThanAverage", "LowStockThreshold < AverageStockThreshold");
-
-                            t.HasCheckConstraint("CK_InventorySettings_PositiveThresholds", "LowStockThreshold > 0 AND AverageStockThreshold > 0");
-                        });
-
-                    b.HasData(
-                        new
-                        {
-                            InventorySettingId = 1,
-                            AverageStockThreshold = 50,
-                            LowStockThreshold = 10
-                        });
                 });
 
             modelBuilder.Entity("backend.Model.Product", b =>

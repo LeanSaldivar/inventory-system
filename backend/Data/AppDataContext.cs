@@ -25,6 +25,8 @@ public class AppDataContext : IdentityDbContext<User, IdentityRole<int>, int>
 
     public DbSet<ReceiptItem> ReceiptItems { get; set; }
 
+    public DbSet<InventorySetting> InventorySettings { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -52,6 +54,10 @@ public class AppDataContext : IdentityDbContext<User, IdentityRole<int>, int>
 
             entity.HasIndex(x => x.UserName)
                 .IsUnique();
+
+            entity.HasIndex(x => x.NormalizedEmail)
+                .IsUnique()
+                .HasDatabaseName("EmailIndex");
 
             entity.OwnsOne(u => u.AvatarUri, avatar =>
             {
@@ -171,6 +177,38 @@ public class AppDataContext : IdentityDbContext<User, IdentityRole<int>, int>
            .IsRequired();
 
 
+        });
+
+        modelBuilder.Entity<InventorySetting>(entity =>
+        {
+            entity.ToTable("InventorySettings", table =>
+            {
+                table.HasCheckConstraint(
+                    "CK_InventorySettings_PositiveThresholds",
+                    "LowStockThreshold > 0 AND AverageStockThreshold > 0"
+                );
+
+                table.HasCheckConstraint(
+                    "CK_InventorySettings_LowLessThanAverage",
+                    "LowStockThreshold < AverageStockThreshold"
+                );
+            });
+
+            entity.Property(u => u.InventorySettingId)
+            .HasColumnName("InventorySettingId");
+
+            entity.Property(u => u.LowStockThreshold)
+            .IsRequired();
+
+            entity.Property(u => u.AverageStockThreshold)
+           .IsRequired();
+
+            entity.HasData(new InventorySetting
+            {
+                InventorySettingId = 1,
+                LowStockThreshold = 10,
+                AverageStockThreshold = 50
+            });
         });
     }
 
