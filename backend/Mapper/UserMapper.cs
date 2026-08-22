@@ -26,5 +26,8 @@ public class UserMapper : Profile
             .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product.ProductName));
         CreateMap<ReceiptItemRequest, ReceiptItem>();
         CreateMap<Receipt, ReceiptResponse>();
+
+        CreateMap<InventorySettingsPatchRequest, InventorySetting>()
+            .ForAllMembers(options => options.Condition((source, destination, sourceMember) => sourceMember != null));
     }
 }
