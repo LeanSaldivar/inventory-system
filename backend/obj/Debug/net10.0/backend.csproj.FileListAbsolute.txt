@@ -799,3 +799,4 @@ C:\Users\lean\Documents\VSCode Projects\inventory-system (Saas)\backend\bin\Debu
 C:\Users\lean\Documents\VSCode Projects\inventory-system (Saas)\backend\bin\Debug\net10.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 C:\Users\lean\Documents\VSCode Projects\inventory-system (Saas)\backend\bin\Debug\net10.0\Microsoft.IdentityModel.Tokens.dll
 C:\Users\lean\Documents\VSCode Projects\inventory-system (Saas)\backend\bin\Debug\net10.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\lean\Documents\VSCode Projects\inventory-system (Saas)\backend\bin\Debug\net10.0\backend.exe
