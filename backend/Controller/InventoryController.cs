@@ -31,6 +31,57 @@ public class InventoryController : ControllerBase
     }
 
     /// <summary>
+    /// Updates the stock thresholds used to calculate product status.
+    /// </summary>
+    [Authorize(Policy = "AdminOnly")]
+    [HttpPatch("settings")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<InventorySetting>> UpdateSettings(
+        [FromBody] InventorySettingsPatchRequest request)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        if (request.LowStockThreshold is null && request.AverageStockThreshold is null)
+        {
+            return BadRequest(new { message = "At least one threshold must be provided." });
+        }
+
+        var settings = await _context.InventorySettings.FirstOrDefaultAsync();
+        if (settings == null)
+        {
+            settings = new InventorySetting();
+            _context.InventorySettings.Add(settings);
+        }
+
+        var lowStockThreshold = request.LowStockThreshold ?? settings.LowStockThreshold;
+        var averageStockThreshold = request.AverageStockThreshold ?? settings.AverageStockThreshold;
+
+        if (lowStockThreshold >= averageStockThreshold)
+        {
+            return BadRequest(new
+            {
+                message = "Low stock threshold must be less than average stock threshold."
+            });
+        }
+
+        settings.LowStockThreshold = lowStockThreshold;
+        settings.AverageStockThreshold = averageStockThreshold;
+
+        var products = await _context.Products.ToListAsync();
+        foreach (var product in products)
+        {
+            product.UpdateStatus(settings);
+        }
+
+        await _context.SaveChangesAsync();
+        return Ok(settings);
+    }
+
+    /// <summary>
     /// Adds a product to user
     /// </summary>
     [Authorize]
@@ -72,10 +123,12 @@ public class InventoryController : ControllerBase
                 return BadRequest(new { message = "Invalid product unit." });
             }
 
+            var settings = await _context.InventorySettings.FirstAsync();
 
             var newProduct = _mapper.Map<Product>(productInventoryRequestDTO);
             newProduct.CreatedAt = DateTime.UtcNow;
             newProduct.LastUpdatedAt = DateTime.UtcNow;
+            newProduct.UpdateStatus(settings);
 
             // Associate product with the current authenticated user
             var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -227,6 +280,5 @@ public class InventoryController : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError,
                 new { message = "An error occurred while deleting the product.", error = ex.Message });
         }
-
     }
 }
