@@ -30,7 +30,6 @@ public class SalesController : ControllerBase
         _mapper = mapper;
         _context = context;
     }
-
     /// <summary>
     /// Creates a sale receipt with items
     /// </summary>
@@ -60,15 +59,57 @@ public class SalesController : ControllerBase
             var receiptItems = new List<ReceiptItem>();
             decimal subtotal = 0;
 
-            foreach (var item in request.Items)
+            var requestedQuantities = request.Items
+                .GroupBy(item => item.ProductId)
+                .ToDictionary(group => group.Key, group => group.Sum(item => (long)item.Quantity));
+
+            var products = await _context.Products
+                .Where(product => requestedQuantities.Keys.Contains(product.Id))
+                .ToDictionaryAsync(product => product.Id);
+
+            var settings = await _context.InventorySettings.FirstOrDefaultAsync();
+            if (settings == null)
             {
-                var product = await _context.Products.FindAsync(item.ProductId);
-                if (product == null)
+                _logger.LogError("Inventory settings have not been initialized");
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    new { message = "Inventory settings have not been initialized." });
+            }
+
+            foreach (var requestedProduct in requestedQuantities)
+            {
+                if (!products.TryGetValue(requestedProduct.Key, out var product))
                 {
-                    _logger.LogWarning($"Product with ID {item.ProductId} not found");
-                    return NotFound(new { message = $"Product with ID {item.ProductId} not found." });
+                    _logger.LogWarning("Product with ID {ProductId} not found", requestedProduct.Key);
+                    return NotFound(new { message = $"Product with ID {requestedProduct.Key} not found." });
                 }
 
+                if (requestedProduct.Value > int.MaxValue)
+                {
+                    return BadRequest(new { message = "The requested product quantity is too large." });
+                }
+
+                if (product.ProductQuantity < requestedProduct.Value)
+                {
+                    _logger.LogWarning(
+                        "Insufficient stock for product {ProductId}: requested {RequestedQuantity}, available {AvailableQuantity}",
+                        product.Id,
+                        requestedProduct.Value,
+                        product.ProductQuantity);
+                    return Conflict(new
+                    {
+                        message = $"Insufficient stock for product '{product.ProductName}'.",
+                        availableQuantity = product.ProductQuantity,
+                        requestedQuantity = requestedProduct.Value
+                    });
+                }
+                product.ProductQuantity -= (int)requestedProduct.Value;
+                product.LastUpdatedAt = DateTime.UtcNow;
+                product.UpdateStatus(settings);
+            }
+
+            foreach (var item in request.Items)
+            {
+                var product = products[item.ProductId];
                 var itemSubtotal = product.ProductPrice * item.Quantity;
                 subtotal += itemSubtotal;
 
@@ -77,7 +118,7 @@ public class SalesController : ControllerBase
                     ProductId = item.ProductId,
                     Quantity = item.Quantity,
                     UnitPrice = product.ProductPrice,
-                    Subtotal = itemSubtotal
+                    Subtotal = itemSubtotal,
                 };
                 receiptItems.Add(receiptItem);
             }
@@ -133,7 +174,7 @@ public class SalesController : ControllerBase
             return Ok(receipt);
 
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             _logger.LogError(ex, "Error getting all receipts");
             return StatusCode(StatusCodes.Status500InternalServerError);
