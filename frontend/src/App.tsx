@@ -7,22 +7,25 @@ import { Sales } from './pages/inventory/sales';
 import { Login } from './pages/auth/login';
 import { Register } from './pages/auth/register';
 import { AuthLayout } from './layout/auth/authLayout';
+import { AuthProvider } from "./api/authContext";
 
 export const App = () => {
   return (
-    <Routes>
-      <Route path="/auth" element={<AuthLayout />}>
-        <Route index element={<Login />} />
-        <Route path="register" element={<Register />} />
-        <Route path="login" element={<Login />} />
-      </Route>
+    <AuthProvider>
+      <Routes>
+        <Route path="/auth" element={<AuthLayout />}>
+          <Route index element={<Login />} />
+          <Route path="register" element={<Register />} />
+          <Route path="login" element={<Login />} />
+        </Route>
 
-      <Route path="/reisa" element={<InventoryLayout />}>
-        <Route index element={<Dashboard />} />
-        <Route path="dashboard" element={<Dashboard />} />
-        <Route path="products" element={<Products />} />
-        <Route path="sales" element={<Sales />} />
-      </Route>
-    </Routes>
+        <Route path="/reisa" element={<InventoryLayout />}>
+          <Route index element={<Dashboard />} />
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="products" element={<Products />} />
+          <Route path="sales" element={<Sales />} />
+        </Route>
+      </Routes>
+    </AuthProvider>
   )
 };
