@@ -3,15 +3,22 @@ import "./btn.scss"
 type ButtonProps = {
   text?: string;
   icon?: React.ReactNode;
-  onClick?: () => void;
+  onClick?: () => void | Promise<void> | React.MouseEventHandler<HTMLButtonElement>;
+  disabled?: boolean;
+  type?: 'button' | 'submit' | 'reset';
+
 };
+
+
 
 export default function AuthBtn({
   text,
   onClick,
+  type = 'button',
+  disabled
 }: ButtonProps) {
   return (
-    <button onClick={onClick} className="btn auth">
+    <button onClick={onClick} className="btn auth" type={type} disabled={disabled}>
       <p>
         {text}
       </p>
@@ -64,7 +71,7 @@ export const SvgBtn = ({
 }: ButtonProps) => {
   return (
     <button onClick={onClick} className="svgBtn">
-        {icon}
+      {icon}
     </button>
   )
 }
